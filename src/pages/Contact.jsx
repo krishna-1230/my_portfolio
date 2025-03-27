@@ -1,7 +1,10 @@
 function Contact() {
   return (
-    <section className="py-10 bg-transparent">
-      <h2 className="text-3xl font-bold mb-4 text-white">Contact Me</h2>
+    <section className="py-40 bg-transparent">
+      <h2 className="text-3xl font-bold mb-4 text-white text-center">Contact Me</h2>
+      <p className="text-xl text-gray-300 mb-6 text-center max-w-xl mx-auto">
+        I'd love to connect with you! Whether you have a question, a project idea, or just want to say hi, feel free to drop me a message below.
+      </p>
       <form className="max-w-md mx-auto bg-white/10 backdrop-blur-sm p-6 rounded-lg shadow-lg">
         <input
           type="text"

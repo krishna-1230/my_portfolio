@@ -31,7 +31,7 @@ function App() {
             <AnimatePresence mode="wait">
               <div id="home">
                 <Home key="home" />
-               
+                <Pagebreaker/>
               </div>
             </AnimatePresence>
             <div id="about" className="min-h-screen">

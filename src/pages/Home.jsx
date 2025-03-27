@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import dp from "../assets/sabbw2.png";
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -27,20 +26,23 @@ const Home = () => {
       transition={{ duration: 1 }}
     >
       <section className="flex items-center justify-center h-screen w-full overflow-hidden">
-        <div className="container flex items-center justify-around">
-          <div className="max-w-sm bg-transparent opacity-95 rounded-3xl">
-            <img src={dp} alt="Profile Picture" className="max-w-sm bg-contain" />
-          </div>
-          <div className="left-0 bg-black z-10 opacity-80 p-10 rounded-3xl max-w-full border-2 border-gray-800">
-            <h1 className="text-5xl font-bold text-white serif-font">Hi, I'm Krishna Gopal V.S</h1>
+        <div className="container flex items-center justify-center px-4">
+          <div className="bg-black z-10 opacity-80 p-10 rounded-3xl border-2 border-gray-800 w-full max-w-4xl">
+            <h1 className="text-5xl font-bold text-white serif-font">
+              Hi, I'm Krishna Gopal V.S
+            </h1>
             <p className="text-white text-xl mt-4 sans-serif-font">
-              I am an aspiring Full Stack Developer & AI Enthusiast currently based in India.<br/>
-              <br/>🛠️ What I Do <br/>
-              🔹 Passionate about building scalable web applications and seamless user experiences.<br/>
-              🔹 Enthusiastic about AI, automation, and cutting-edge technologies.<br/>
-              <br/>🧠 My Approach<br/>
-              I am detail-oriented and enjoy solving complex problems with efficient solutions. Always eager to learn and innovate.<br/>
-              <br/>🎮🎵 Beyond Tech<br/>
+              I am an aspiring Full Stack Developer & AI Enthusiast currently based in India.
+              <br />
+              <br />🛠️ What I Do <br />
+              🔹 Passionate about building scalable web applications and seamless user experiences.
+              <br />
+              🔹 Enthusiastic about AI, automation, and cutting-edge technologies.
+              <br />
+              <br />🧠 My Approach<br />
+              I am detail-oriented and enjoy solving complex problems with efficient solutions. Always eager to learn and innovate.
+              <br />
+              <br />🎮🎵 Beyond Tech<br />
               Outside of coding, I love playing video games 🎮 and immersing myself in music 🎵.
             </p>
           </div>

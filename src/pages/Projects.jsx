@@ -1,13 +1,14 @@
 import React from "react";
-import projects1 from "../assets/projects/netconf_display.png";
-import projects2 from "../assets/projects/matching.jpg"; 
-import projects3 from "../assets/projects/customer_onboard_display.png"; // Replace with actual project images
+import projects1 from "../assets/projects/bot.jpg";
+import projects2 from "../assets/projects/ecomm.webp"; 
+import projects3 from "../assets/projects/llama.png"; // Replace with actual project images
+import projects4 from "../assets/projects/resume.jpg";
 
 const projects = [
   {
     id: 1,
     title: "E-Commerce Platform",
-    image: projects1,
+    image: projects2,
     description: "A full-stack e-commerce platform with a Golang backend and React + Next.js frontend, integrated with MySQL and Razorpay for payments.",
     github: "https://google.com",
     technologies: ["Golang", "React", "Next.js", "MySQL", "Razorpay"],
@@ -15,7 +16,7 @@ const projects = [
   {
     id: 2,
     title: "AI Chatbot",
-    image: projects2,
+    image: projects1,
     description: "An AI-powered chatbot using Python and Flask with TensorFlow Keras, trained on JSON datasets for natural language understanding.",
     github: "https://google.com",
     technologies: ["Python", "Flask", "TensorFlow", "Keras", "AI"],
@@ -23,7 +24,7 @@ const projects = [
   {
     id: 3,
     title: "Resume Parser",
-    image: projects3,
+    image: projects4,
     description: "A prototype AI-powered resume parser designed to extract and structure key information from resumes.",
     github: "https://google.com",
     technologies: ["Python", "NLP", "AI"],

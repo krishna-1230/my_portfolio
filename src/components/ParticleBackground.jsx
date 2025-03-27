@@ -1,167 +1,143 @@
 import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 const ParticleBackground = () => {
-  const canvasRef = useRef(null);
+  const mountRef = useRef(null);
+
+  // Utility: Create a circle texture with a radial gradient.
+  const generateCircleTexture = (color = 'white') => {
+    const size = 64;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext('2d');
+    
+    // Create a radial gradient from the center to transparent edge.
+    const gradient = context.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(1, 'transparent');
+    context.fillStyle = gradient;
+    
+    context.beginPath();
+    context.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+    context.fill();
+    
+    return new THREE.CanvasTexture(canvas);
+  };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Scene Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 5;
     
-    const ctx = canvas.getContext('2d');
-    const devicePixelRatio = window.devicePixelRatio || 1;
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    mountRef.current.appendChild(renderer.domElement);
 
-    // Set up canvas dimensions for sharp rendering on retina devices
-    const updateCanvasSize = () => {
-      canvas.width = window.innerWidth * devicePixelRatio;
-      canvas.height = window.innerHeight * devicePixelRatio;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+    // Create a group to hold blue particle layers.
+    const particleGroup = new THREE.Group();
+    scene.add(particleGroup);
+
+    // Utility: Create a blue particle layer with custom parameters.
+    const createLayer = (particleCount, spread, size, color, factor) => {
+      const positions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * spread;
+      }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const texture = generateCircleTexture(color);
+      const material = new THREE.PointsMaterial({
+        color: new THREE.Color(color),
+        size: size,
+        transparent: true,
+        opacity: 0.8,
+        map: texture,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      const points = new THREE.Points(geometry, material);
+      // Store a custom factor for parallax effect.
+      points.userData = { factor };
+      return points;
     };
+
+    // Create several blue layers with varying parameters.
+    const layers = [];
+    const layer1 = createLayer(450, 12, 0.18, '#008cff', 0.9); // Base layer, slowest.
+    const layer2 = createLayer(400, 18, 0.17, '#ffffff', 1.2);
+    const layer3 = createLayer(350, 24, 0.16, '#008cff', 1.5);
+    const layer4 = createLayer(300, 28, 0.19, '#ffffff', 1.7);
+    const layer5 = createLayer(300, 32, 0.20, '#008cff', 1.9);
+    const layer6 = createLayer(250, 34, 0.21, '#ffffff', 2.1);
+    const layer7 = createLayer(200, 36, 0.22, '#008cff', 2.3);
     
-    updateCanvasSize();
+    
 
-    // Configuration object for easy adjustments
-    const config = {
-      gap: 30,
-      friction: 0.85,
-      ease: 0.2,
-      // Adjusted mouse radius for device pixel ratio
-      mouseRadius: 300 * devicePixelRatio
+    
+    
+    layers.push(layer1, layer2, layer3, layer4, layer5, layer6, layer7);
+    layers.forEach(layer => particleGroup.add(layer));
+
+    // Global mouse variables for target rotation.
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+    const onMouseMove = (e) => {
+      targetRotationY = ((e.clientX - window.innerWidth / 2) / window.innerWidth) * Math.PI * 0.5;
+      targetRotationX = -((e.clientY - window.innerHeight / 2) / window.innerHeight) * Math.PI * 0.5;
     };
+    window.addEventListener('mousemove', onMouseMove);
 
-    class Particle {
-      constructor(x, y, effect) {
-        this.originX = x;
-        this.originY = y;
-        this.effect = effect;
-        this.x = x;
-        this.y = y;
-        this.vx = 0;
-        this.vy = 0;
-        // Random size between 2 and 5
-        this.size = Math.random() * 3 + 2;
-      }
+    // Clock for time-based animations.
+    const clock = new THREE.Clock();
 
-      draw() {
-        this.effect.ctx.fillStyle = 'darkslategray';
-        this.effect.ctx.fillRect(this.x, this.y, this.size, this.size);
-      }
-      
-
-      update() {
-        // Calculate difference between mouse position and particle
-        const dx = this.effect.mouse.x - this.x;
-        const dy = this.effect.mouse.y - this.y;
-        const distanceSq = dx * dx + dy * dy;
-        const radiusSq = config.mouseRadius * config.mouseRadius;
-
-        if (distanceSq < radiusSq) {
-          // Get actual distance
-          const distance = Math.sqrt(distanceSq);
-          // Normalize force based on how close the particle is to the mouse
-          const force = (config.mouseRadius - distance) / config.mouseRadius;
-          const angle = Math.atan2(dy, dx);
-          this.vx += force * Math.cos(angle);
-          this.vy += force * Math.sin(angle);
-        }
-        
-        // Apply friction and ease the particle back to its original position
-        this.vx *= config.friction;
-        this.vy *= config.friction;
-        this.x += this.vx + (this.originX - this.x) * config.ease;
-        this.y += this.vy + (this.originY - this.y) * config.ease;
-        
-        this.draw();
-      }
-    }
-
-    class Effect {
-      constructor(width, height, ctx) {
-        this.width = width;
-        this.height = height;
-        this.ctx = ctx;
-        this.particles = [];
-        this.mouse = {
-          // Start with the mouse in the center of the canvas
-          x: width / 2,
-          y: height / 2
-        };
-        this.init();
-      }
-
-      init() {
-        this.particles = [];
-        // Create a grid of particles based on the gap
-        for (let x = 0; x < this.width; x += config.gap) {
-          for (let y = 0; y < this.height; y += config.gap) {
-            this.particles.push(new Particle(x, y, this));
-          }
-        }
-      }
-
-      update() {
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        this.particles.forEach(particle => particle.update());
-      }
-    }
-
-    // Initialize the effect
-    let effect = new Effect(canvas.width, canvas.height, ctx);
-
-    // Animation loop
-    let animationFrameId;
+    // Animation Loop.
     const animate = () => {
-      effect.update();
-      animationFrameId = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+
+      // Update each layer's rotation based on mouse movement, scaled by its factor.
+      layers.forEach((layer) => {
+        layer.rotation.x += (targetRotationX * layer.userData.factor - layer.rotation.x) * 0.1;
+        layer.rotation.y += (targetRotationY * layer.userData.factor - layer.rotation.y) * 0.1;
+      });
+      
+      renderer.render(scene, camera);
     };
     animate();
 
-    // Mouse move event handler
-    const handleMouseMove = (e) => {
-      effect.mouse.x = e.clientX * devicePixelRatio;
-      effect.mouse.y = e.clientY * devicePixelRatio;
-    };
-
-    // Window resize event handler
+    // Handle Window Resizing.
     const handleResize = () => {
-      updateCanvasSize();
-      effect.width = canvas.width;
-      effect.height = canvas.height;
-      effect.init();
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
-
-    // Mobile touch support
-    const handleTouchMove = (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      effect.mouse.x = touch.clientX * devicePixelRatio;
-      effect.mouse.y = touch.clientY * devicePixelRatio;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', handleResize);
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
-    // Cleanup on unmount
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('touchmove', handleTouchMove);
-      cancelAnimationFrame(animationFrameId);
+      mountRef.current.removeChild(renderer.domElement);
     };
   }, []);
 
   return (
-    <canvas 
-      ref={canvasRef} 
+    <div
+      ref={mountRef}
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
         width: '100%',
         height: '100%',
+        top: 0,
+        left: 0,
         zIndex: -1,
-        backgroundColor: 'black'
       }}
     />
   );
