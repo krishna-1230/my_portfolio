@@ -23,10 +23,10 @@ function Contact() {
   const sendEmail = (e) => {
     e.preventDefault();
     emailjs.sendForm(
-      'service_6j9tri4',      // Your EmailJS Service ID
-      'template_chz4a2r',     // Replace with your EmailJS Template ID
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,      // EmailJS Service ID from .env
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,     // EmailJS Template ID from .env
       e.target,
-      'fr96yph-3znkMhOwB'       // Replace with your EmailJS Public Key
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY       // EmailJS Public Key from .env
     )
     .then(() => {
       alert('Message sent!');
