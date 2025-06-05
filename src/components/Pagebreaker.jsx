@@ -25,15 +25,16 @@ const EnhancedScrollingText = () => {
 
       {/* Scrolling container */}
       <div className="overflow-hidden whitespace-nowrap flex">
+        {/* Duplicate the content to ensure seamless scroll */}
         <div className="flex items-center animate-scroll">
-          {[...Array(10)].map((_, index) => (
+          {[...Array(20)].map((_, index) => (
             <div key={index} className="flex items-center">
               {scrollingContent}
             </div>
           ))}
         </div>
         <div className="flex items-center animate-scroll" aria-hidden="true">
-          {[...Array(10)].map((_, index) => (
+          {[...Array(20)].map((_, index) => (
             <div key={index} className="flex items-center">
               {scrollingContent}
             </div>

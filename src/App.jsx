@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "framer-motion";
+// import { AnimatePresence } from "framer-motion";
 import Loader from "./components/Loader";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -9,6 +11,36 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
+
+function SectionWrapper({ id, children, direction = "left" }) {
+  const ref = React.useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      controls.start({
+        opacity: 1,
+        x: 0,
+        transition: { duration: 0.8, ease: "easeOut" },
+      });
+    }
+  }, [inView, controls]);
+
+  const initialX = direction === "left" ? -120 : 120;
+
+  return (
+    <motion.div
+      id={id}
+      ref={ref}
+      initial={{ opacity: 0, x: initialX }}
+      animate={controls}
+      className="min-h-screen w-full flex items-center justify-center"
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -28,21 +60,19 @@ function App() {
           <ParticleBackground />
           <Header />
           <main className="flex-grow flex flex-col justify-center items-center text-white font-sans">
-            <AnimatePresence mode="wait">
-              <div id="home">
-                <Home key="home" />
-                <Pagebreaker/>
-              </div>
-            </AnimatePresence>
-            <div id="about" className="min-h-screen">
+            <SectionWrapper id="home" direction="left">
+              <Home />
+            </SectionWrapper>
+            {/* <Pagebreaker/> */}
+            <SectionWrapper id="about" direction="right">
               <About />
-            </div>
-            <div id="projects" className="min-h-screen">
+            </SectionWrapper>
+            <SectionWrapper id="projects" direction="left">
               <Projects />
-            </div>
-            <div id="contact" className="min-h-screen">
+            </SectionWrapper>
+            <SectionWrapper id="contact" direction="right">
               <Contact />
-            </div>
+            </SectionWrapper>
           </main>
           <Footer />
         </div>

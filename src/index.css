@@ -29,17 +29,18 @@ body {
 
 @keyframes scroll {
   from {
-    transform: translateX(0);
+    transform: translateX(-50%); /* Start off-screen to the left */
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(50%); /* Move off-screen to the right */
   }
 }
 
 .animate-scroll {
   display: flex;
-  animation: scroll 10s linear infinite;
+  animation: scroll 10s linear infinite; /* Smooth and infinite scrolling */
 }
+
 
 @keyframes spiral {
   from {

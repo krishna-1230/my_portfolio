@@ -1,64 +1,27 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 const Home = () => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const homeSection = document.getElementById("home");
-      if (homeSection) {
-        const rect = homeSection.getBoundingClientRect();
-        setIsVisible(rect.top >= 0 && rect.bottom <= window.innerHeight);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <motion.div
-      id="home"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
-    >
+    <div id="home" className="p-6 md:p-20">
       <section className="flex items-center justify-center h-screen w-full overflow-hidden">
-        <div className="container flex items-center justify-center px-4">
-          <div className="bg-black z-10 opacity-80 p-10 rounded-3xl border-2 border-gray-800 w-full max-w-4xl">
-            <h1 className="text-5xl font-bold text-white serif-font">
-              Hi, I'm Krishna Gopal V.S
-            </h1>
-            <p className="text-white text-xl mt-4 sans-serif-font">
-              I am an aspiring Full Stack Developer & AI Enthusiast currently based in India.
-              <br />
-              <br />🛠️ What I Do <br />
-              🔹 Passionate about building scalable web applications and seamless user experiences.
-              <br />
-              🔹 Enthusiastic about AI, automation, and cutting-edge technologies.
-              <br />
-              <br />🧠 My Approach<br />
-              I am detail-oriented and enjoy solving complex problems with efficient solutions. Always eager to learn and innovate.
-              <br />
-              <br />🎮🎵 Beyond Tech<br />
-              Outside of coding, I love playing video games 🎮 and immersing myself in music 🎵.
-            </p>
-          </div>
+        <div className="border-2 border-gray-800 backdrop-blur-sm p-6 sm:p-8 md:p-10 rounded-3xl bg-white/5 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white serif-font">
+            Hi, I'm Krishna Gopal V.S
+          </h1>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 mt-4">
+            I'm a <span className="text-white font-semibold">Full Stack Developer</span> & <span className="text-white font-semibold">AI Enthusiast</span> from India, passionate about building scalable web apps and exploring the future of technology.<br /><br />
+            <span className="font-semibold text-white">What drives me?</span><br />
+            🚀 Turning ideas into seamless digital experiences<br />
+            🤖 Diving deep into AI, automation, and innovation<br />
+            🧠 Solving complex problems with creative, efficient code<br /><br />
+            <span className="font-semibold text-white">Beyond the screen:</span><br />
+            🎮 Gamer at heart & music lover<br /><br />
+            Always learning, always building. Let's connect and create something awesome!
+          </p>
         </div>
       </section>
-      {isVisible && (
-        <motion.footer
-          className="fixed bottom-0 w-full bg-black text-white text-center py-2"
-          initial={{ x: "-100%" }}
-          animate={{ x: "100%" }}
-          transition={{ duration: 15, ease: "linear", repeat: Infinity }}
-        >
-          ABOUT ME ✨
-        </motion.footer>
-      )}
-    </motion.div>
+    </div>
   );
 };
 

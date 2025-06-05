@@ -18,7 +18,7 @@ const projects = [
     title: "AI Chatbot",
     image: projects1,
     description: "An AI-powered chatbot using Python and Flask with TensorFlow Keras, trained on JSON datasets for natural language understanding.",
-    github: "https://google.com",
+    github: "https://github.com/krishna-1230/ai_chatbot",
     technologies: ["Python", "Flask", "TensorFlow", "Keras", "AI"],
   },
   {
@@ -26,7 +26,7 @@ const projects = [
     title: "Resume Parser",
     image: projects4,
     description: "A prototype AI-powered resume parser designed to extract and structure key information from resumes.",
-    github: "https://google.com",
+    github: "https://github.com/krishna-1230/resume_parser",
     technologies: ["Python", "NLP", "AI"],
   },
   {
@@ -34,7 +34,7 @@ const projects = [
     title: "LLaMA Model Fine-Tuning",
     image: projects3,
     description: "Fine-tuned Meta's LLaMA model for specialized text generation tasks using custom datasets.",
-    github: "https://google.com",
+    github: "https://github.com/krishna-1230/llama_tune",
     technologies: ["Python", "LLaMA", "Hugging Face", "Deep Learning"],
   },
 ];
@@ -51,7 +51,7 @@ const Projects = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 border border-white/30"
+              className="bg-white/5 backdrop-blur-lg shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 border border-white/30"
             >
               <img
                 src={project.image}
