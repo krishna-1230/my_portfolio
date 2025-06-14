@@ -1,5 +1,6 @@
+import { useState, useRef } from 'react';
 import { FaEnvelope, FaLinkedin, FaGithub, FaReddit } from 'react-icons/fa';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 
 // Custom Hugging Face SVG Icon
 const HuggingFaceIcon = (props) => (
@@ -19,20 +20,56 @@ const HuggingFaceIcon = (props) => (
 );
 
 function Contact() {
+  const form = useRef();
+  const [status, setStatus] = useState({
+    submitted: false,
+    success: false,
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
+
   // EmailJS handler
   const sendEmail = (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    // Get environment variables - in Vite, all env variables must be prefixed with VITE_
+    const serviceId = import.meta.env.VITE_SERVICE_ID;
+    const templateId = import.meta.env.VITE_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_PUBLIC_KEY;
+
+    // Log the values for debugging (remove in production)
+
+    // Fallback to hardcoded values if env vars are not available
+    const finalServiceId = serviceId;
+    const finalTemplateId = templateId;
+    const finalPublicKey = publicKey;
+
     emailjs.sendForm(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,      // EmailJS Service ID from .env
-      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,     // EmailJS Template ID from .env
-      e.target,
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY       // EmailJS Public Key from .env
+      finalServiceId,
+      finalTemplateId,
+      form.current,
+      {
+        publicKey: finalPublicKey,
+      }
     )
-    .then(() => {
-      alert('Message sent!');
-      e.target.reset();
-    }, () => {
-      alert('Failed to send message.');
+    .then((response) => {
+      console.log('SUCCESS!', response.status, response.text);
+      setStatus({
+        submitted: true,
+        success: true,
+        message: 'Your message has been sent successfully! I will get back to you soon.'
+      });
+      form.current.reset();
+      setLoading(false);
+    }, (error) => {
+      console.log('FAILED...', error.text);
+      setStatus({
+        submitted: true,
+        success: false,
+        message: `There was an error sending your message: ${error.text}. Please try again later.`
+      });
+      setLoading(false);
     });
   };
 
@@ -44,7 +81,7 @@ function Contact() {
       </p>
       {/* Contact Links */}
       <div className="flex justify-center gap-6 mb-10">
-        <a href="mailto:your.email@example.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 text-3xl transition-colors" title="Email">
+        <a href="mailto:krishspyk1230@gmail.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 text-3xl transition-colors" title="Email">
           <FaEnvelope />
         </a>
         <a href="https://www.linkedin.com/in/krishna-gopal-v-s-/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 text-3xl transition-colors" title="LinkedIn">
@@ -60,36 +97,72 @@ function Contact() {
           <HuggingFaceIcon style={{ display: 'inline', verticalAlign: 'middle', marginTop: '-9px', position: 'relative', top: '-2px' }} />
         </a>
       </div>
+      
       {/* Contact Form */}
-      <form
-        className="max-w-md mx-auto bg-white/5 backdrop-blur-sm p-6 rounded-lg shadow-lg"
-        onSubmit={sendEmail}
-      >
-        <input
-          type="text"
-          name="from_name"
-          placeholder="Your Name"
-          className="w-full p-3 mb-4 border border-gray-300 rounded-md bg-transparent text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-          required
-        />
-        <input
-          type="email"
-          name="reply_to"
-          placeholder="Your Email"
-          className="w-full p-3 mb-4 border border-gray-300 rounded-md bg-transparent text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-          required
-        />
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          rows="4"
-          className="w-full p-3 mb-4 border border-gray-300 rounded-md bg-transparent text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-          required
-        ></textarea>
-        <button className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
-          Send
-        </button>
-      </form>
+      <div className="max-w-md mx-auto bg-zinc-900/30 backdrop-blur-md p-6 rounded-lg shadow-lg border border-zinc-800/100">
+        {status.submitted ? (
+          <div className={`p-4 mb-4 rounded-md ${status.success ? 'bg-blue-500/20 text-blue-200' : 'bg-red-500/20 text-red-200'}`}>
+            <p>{status.message}</p>
+            {status.success && (
+              <button 
+                onClick={() => setStatus({ submitted: false, success: false, message: '' })}
+                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Send Another Message
+              </button>
+            )}
+          </div>
+        ) : (
+          <form ref={form} onSubmit={sendEmail} className="space-y-4">
+            <div>
+              <label htmlFor="user_name" className="block text-white mb-2">Name</label>
+              <input
+                type="text"
+                id="user_name"
+                name="user_name"
+                placeholder="Your Name"
+                className="w-full p-3 border border-gray-700 rounded-md bg-zinc-900/50 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                required
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="user_email" className="block text-white mb-2">Email</label>
+              <input
+                type="email"
+                id="user_email"
+                name="user_email"
+                placeholder="Your Email"
+                className="w-full p-3 border border-gray-700 rounded-md bg-zinc-900/50 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                required
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="message" className="block text-white mb-2">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Your Message"
+                rows="4"
+                className="w-full p-3 border border-gray-700 rounded-md bg-zinc-900/50 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                required
+              ></textarea>
+            </div>
+            
+            <button 
+              type="submit" 
+              className="w-full bg-blue-500 text-white py-3 px-4 rounded-md hover:bg-blue-600 transition-colors flex justify-center items-center"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="inline-block animate-spin mr-2">⟳</span>
+              ) : null}
+              {loading ? 'Sending...' : 'Send Message'}
+            </button>
+          </form>
+        )}
+      </div>
     </section>
   );
 }

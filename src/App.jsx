@@ -9,6 +9,7 @@ import ParticleBackground from "./components/ParticleBackground";
 import Pagebreaker from "./components/Pagebreaker";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Experience from "./pages/Experience";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 
@@ -67,10 +68,13 @@ function App() {
             <SectionWrapper id="about" direction="right">
               <About />
             </SectionWrapper>
-            <SectionWrapper id="projects" direction="left">
+            <SectionWrapper id="experience" direction="left">
+              <Experience />
+            </SectionWrapper>
+            <SectionWrapper id="projects" direction="right">
               <Projects />
             </SectionWrapper>
-            <SectionWrapper id="contact" direction="right">
+            <SectionWrapper id="contact" direction="left">
               <Contact />
             </SectionWrapper>
           </main>

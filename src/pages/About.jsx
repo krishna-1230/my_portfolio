@@ -4,18 +4,18 @@ function About() {
       <h2 className="text-4xl md:text-6xl font-extrabold mb-6 md:mb-12 text-center font-poppins">
         About Me
       </h2>
-      <div className="border-2 border-gray-800 backdrop-blur-sm p-6 md:p-10 rounded-3xl bg-white/5 max-w-4xl mx-auto">
-        <p className="text-lg md:text-2xl text-gray-700 dark:text-gray-300 font-inter">
-          Hi, I'm <span className="font-semibold text-white">Krishna Gopal</span> — a passionate <span className="font-medium text-white">Full Stack Developer</span> and <span className="font-medium text-white">AI Enthusiast</span> based in India. Currently, I'm a 3rd-year B.Tech IT student, always eager to learn, build, and innovate.
+      <div className="border-2 border-gray-800 backdrop-blur-sm p-6 md:p-10 rounded-3xl bg-white/5 max-w-5xl mx-auto">
+        <p className="text-base md:text-lg text-white font-inter font-medium">
+          Hi, I'm Krishna Gopal V.S — Welcome to my portfolio website! I'm currently studying my Undergraduate in Bachelor's of IT.
         </p>
-        <p className="text-lg md:text-2xl text-gray-700 dark:text-gray-300 font-inter mt-6">
-          My journey so far includes hands-on experience with <span className="font-semibold text-white">AWS, Golang, React, and MySQL</span>. I've built an AI-powered chatbot, a resume parser, and I'm now developing a scalable e-commerce platform using Golang and Next.js, with Razorpay integration.
+        <p className="text-base md:text-lg text-white font-inter font-medium mt-6">
+          I'm a passionate tech enthusiast who thrives on solving problems and pushing the boundaries of technology. From Full Stack Web Development and Cloud Computing to AI/ML and Generative AI, I love exploring new ways to innovate and automate.
         </p>
-        <p className="text-lg md:text-2xl text-gray-700 dark:text-gray-300 font-inter my-6 md:my-10">
-          I've interned at <span className="font-medium text-white">Ether Infotech</span> (AI) and completed a virtual internship in Generative AI with <span className="font-medium text-white">Skillable</span>. I'm also preparing for the <span className="font-semibold text-white">AWS Developer Associate certification</span> and exploring Docker and Kubernetes.
+        <p className="text-base md:text-lg text-white font-inter font-medium my-6 md:my-10">
+          I have a strong foundation in IT, with hands-on experience in a wide range of technologies and tools. Whether it's developing a new application, optimizing a system, or finding creative solutions to complex problems, I'm always up for a challenge.
         </p>
-        <p className="text-lg md:text-2xl text-gray-700 dark:text-gray-300 font-inter">
-          I love solving real-world problems with code, exploring new tech, and collaborating on impactful projects. When I'm not coding, you'll find me gaming or lost in music. Let's connect and create something amazing!
+        <p className="text-base md:text-lg text-white font-inter font-medium">
+          I'm a firm believer in the power of technology to transform lives and make the world a better place. I'm passionate about using my skills and knowledge to create innovative solutions that have a positive impact on society and the environment.
         </p>
       </div>
     </section>

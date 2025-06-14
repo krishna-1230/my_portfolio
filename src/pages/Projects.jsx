@@ -10,7 +10,7 @@ const projects = [
     title: "E-Commerce Platform",
     image: projects2,
     description: "A full-stack e-commerce platform with a Golang backend and React + Next.js frontend, integrated with MySQL and Razorpay for payments.",
-    github: "https://google.com",
+    github: "https://github.com/krishna-1230/e-comm-shopping.git",
     technologies: ["Golang", "React", "Next.js", "MySQL", "Razorpay"],
   },
   {
@@ -51,7 +51,7 @@ const Projects = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="bg-white/5 backdrop-blur-lg shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 border border-white/30"
+              className="bg-white/5 backdrop-blur-lg shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 border border-white/10"
             >
               <img
                 src={project.image}
